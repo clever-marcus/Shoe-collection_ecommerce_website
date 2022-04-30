@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Online shopping{% endblock %}</title>
+
+    <!--font awesome link-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!--Jquery link-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqKL9FccASB900KwACQJpFTUBLTYOVvVU"
+        crossorigin="anonymous"></script>
+
+    <!--code pen link-->
+    <link rel="stylesheet" href="https://codepen.io/aliceyt/pen/qBObwpZ">
+
+    <!--custom css file link-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script type="text/javascript">
+        let user = '{{request.user}}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        let csrftoken = getToken('csrftoken');
+    </script>
+
+</head>
+
+<body>
+
+    <header>
+        <a href="{% url 'index' %}" class="logo"><i class="fas fa-bag"></i>Shoes Collection &#129297;</a>
+
+        <div class="icons">
+            <i class="fas fa-bars" id="menu-bar"></i>
+        </div>
+
+
+
+        <nav class="navbar">
+            <a href="{% url 'index' %}">home</a>
+            <a id="update-cart" href="{% url 'cart' %}">Cart({{cartItems}})</a>
+            <a href="{% url 'checkout' %}">checkout</a>
+        </nav>
+
+        <div id="selected-language">
+            <select id="languages" name="languages">
+                <option>Choose Language</option>
+                <option id="opt1" value="en">English</option>
+                <option id="opt2" value="sw">Swahili</option>
+
+            </select>
+        </div>
+
+
+    </header>
+
+    {% block content %}
+    <div class="container">
+        <section class="gallery">
+            <h1 class="heading"> our <span> available </span>products</h1>
+
+            <!-- search bar right align -->
+            <div class="search">
+                <form action="#" id="search-form">
+                    <input type="text" placeholder=" Search For Items..." name="item_name">
+                    <button class="btn">Search</button>
+                </form>
+            </div>
+
+            <div class="box-container">
+                {% for product in product_objects %}
+                <div class="box">
+                    <div class="image">
+                        <img src="{{product.imageURL}}" alt="">
+
+                    </div>
+
+                    <div class="content">
+
+                        <h3>{{product.title}}</h3>
+                        <p>{{product.description}}</p>
+                        <br>
+                        <h4 class="price">shs {{product.price|floatformat:1}}</h4>
+                        <div class="page-links">
+                            <button data-product={{product.id}} data-action="add" class="btn add-btn update-cart">Add
+                                to
+                                Cart</button>
+                            <span><a href="/{{product.id}}" class="btn view-btn">view</a></span>
+                        </div>
+
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="row">
+            <div class="col-md-3 offset-md-4">
+                <ul class="pagination">
+                    {% if product_objects.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ product_objects.previous_page_number }}" class="btn">Previous</a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if product_objects.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ product_objects.next_page_number }}" class="btn">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    {% endblock content %}
+
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+</body>
+
+
+
+
+</html>

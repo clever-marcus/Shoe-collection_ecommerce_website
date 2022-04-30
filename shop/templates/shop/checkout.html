@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% extends 'shop/index.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% block content %}
+    <section class="order">
+        <h1 class="heading"> order <span> now </span></h1>
+
+
+
+        <form action="" id="form">
+            <div id="transportation-info">
+                <div class="inputBox">
+                    <div class="input">
+                        <span>your name</span>
+                        <input required type="text" name="name" placeholder="enter your name...">
+                    </div>
+                    <div class="input">
+                        <span>Phone number</span>
+                        <input required type="number" name="number" placeholder="enter your number...">
+                    </div>
+                </div>
+
+                <div class="inputBox">
+                    <div class="input">
+                        <span>email address</span>
+                        <input required type="email" name="email" placeholder="enter email address...">
+                    </div>
+                    <div class="input">
+                        <span>County</span>
+                        <input type="text" name="county" placeholder="enter your county...">
+                    </div>
+                </div>
+
+                <div class="inputBox">
+                    <div class="input">
+                        <span>zipcode</span>
+                        <input type="text" name="zipcode" placeholder="Zip code...">
+                    </div>
+                    <div class="input">
+                        <span>date and time</span>
+                        <input type="datetime-local" name="dateAdded">
+                    </div>
+                </div>
+
+                <div class="inputBox">
+                    <div class="input">
+                        <span>your address</span>
+                        <textarea name="address" placeholder="enter your address" id="" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="input">
+                        <span>your message</span>
+                        <textarea name="message" placeholder="enter your message" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button id="form-button" type="submit" class="btn">order now</button>
+        </form>
+
+    </section>
+
+    <script type="text/javascript">
+        let transporting = '{{order.transporting}}'
+        let total = '{{order.get_cart_total}}'
+
+        if (transporting == 'False') {
+            document.getElementById('transportation-info').innerHTML = ''
+        }
+
+        document.getElementById('form-button').addEventListener('click', function (e) {
+            submitFormData()
+        })
+
+        function submitFormData() {
+            let userFormData = {
+                'name': null,
+                'number': null,
+                'email': null,
+                'total': total,
+            }
+
+            let transportingInfo = {
+                'address': null,
+                'county': null,
+                'dateAdded': null,
+                'zipcode': null,
+                'message': null
+            }
+
+            if (transporting != 'False') {
+                transportingInfo.address = form.address.value
+                transportingInfo.county = form.county.value
+                transportingInfo.dateAdded = form.dateAdded.value
+                transportingInfo.zipcode = form.zipcode.value
+                transportingInfo.message = form.message.value
+                transportingInfo.number = form.number.value
+                transportingInfo.email = form.email.value
+            }
+
+            if (user == 'AnonymousUser') {
+                userFormData.name = form.name.value
+                userFormData.number = form.number.value
+                userFormData.email = form.email.value
+            }
+
+            let url = "/process_order/"
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ 'form': userFormData, 'transporting': transportingInfo }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Success:', data);
+                    alert('Your order is complete!');
+                    window.location.href = "{% url 'index' %}"
+                })
+        }
+
+    </script>
+    {% endblock content %}
+</body>
+
+</html>

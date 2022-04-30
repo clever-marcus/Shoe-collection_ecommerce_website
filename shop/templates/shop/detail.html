@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% extends 'shop/index.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% block content %}
+    <section class="details">
+        <div class="container">
+            <div class="row">
+                <div class="image">
+                    <img src="{{ product_object.imageURL }}">
+                </div>
+
+
+                <div class="content">
+                    <div class="title">
+                        <p>{{ product_object.title }}</p>
+                    </div>
+
+                    <div class="description">
+                        <p>{{ product_object.description }}</p>
+                    </div>
+
+                    <div class="price">
+                        <h4>Now: {{ product_object.price|floatformat:0 }}</h4>
+                    </div>
+
+                    <div class="discount-price">
+                        <h4>Was: {{ product_object.discount_price|floatformat:0 }}</h4>
+                    </div>
+
+                    <div class="checkout-btn">
+                        <a href="{% url 'index' %}" class="btn">Back</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock content %}
+</body>
+
+</html>
