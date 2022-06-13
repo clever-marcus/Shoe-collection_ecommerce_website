@@ -49,10 +49,7 @@
     <header>
         <a href="{% url 'index' %}" class="logo"><i class="fas fa-bag"></i>Shoes Collection &#129297;</a>
 
-        <div class="icons">
-            <i class="fas fa-bars" id="menu-bar"></i>
-        </div>
-
+        <div id="menu-bar" class="fas fa-bars"></div>
 
 
         <nav class="navbar">
@@ -60,15 +57,6 @@
             <a id="update-cart" href="{% url 'cart' %}">Cart({{cartItems}})</a>
             <a href="{% url 'checkout' %}">checkout</a>
         </nav>
-
-        <div id="selected-language">
-            <select id="languages" name="languages">
-                <option>Choose Language</option>
-                <option id="opt1" value="en">English</option>
-                <option id="opt2" value="sw">Swahili</option>
-
-            </select>
-        </div>
 
 
     </header>
